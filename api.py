@@ -21,6 +21,8 @@ import yaml
 from flask_cors import CORS
 from decimal import Decimal
 voice_path = "voices/"
+import nltk
+nltk.download('punkt_tab')
 
 gpu_device_id = 0
 
@@ -42,8 +44,10 @@ def genHeader(sampleRate, bitsPerSample, channels):
     o += bytes("data", "ascii")
     o += (datasize).to_bytes(4, "little")
     return o
-    
-voicelist = ['f-us-1', 'f-us-2', 'f-us-3', 'f-us-4', 'm-us-1', 'm-us-2', 'm-us-3', 'm-us-4', '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','101','102','103','104','105','106','107','108','109','110','111','112','113']
+
+voicelist = filenames = [f[:-4] for f in os.listdir('voices') if f.endswith('.wav')]
+# voicelist = ['f-us-1', 'f-us-2', 'f-us-3', 'f-us-4', 'm-us-1', 'm-us-2', 'm-us-3', 'm-us-4', '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','101','102','103','104','105','106','107','108','109','110','111','112','113']
+
 voices = {}
 import phonemizer
 global_phonemizer = phonemizer.backend.EspeakBackend(language='en-us', preserve_punctuation=True,  with_stress=True)
